@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-// import { TodoModuleModule } from './todo/todo.module';
-// import { TodoController } from './todo/todo.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from './user/user.module';
-import { User } from './user/entities/user.entity';
+import { ClassroomModule } from './classroom/classroom.module';
+import { StudentModule } from './student/student.module';
+import { Classroom } from './classroom/entities/classroom.entity';
+import { Student } from './student/entities/student.entity';
 
 @Module({
   // imports: [TodoModuleModule],
@@ -17,10 +17,11 @@ import { User } from './user/entities/user.entity';
       "username": "postgres",
       "password": "postgres",
       "database": "mydb",
-      "entities": [User],
+      "entities": [Classroom,Student],
       "synchronize": true
     }),
-    UserModule,
+    ClassroomModule,
+    StudentModule,
   ],
   // controllers: [AppController, TodoController],
   controllers: [AppController],
