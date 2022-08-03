@@ -34,4 +34,12 @@ export class StudentController {
   update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
     return this.studentService.update(+id, updateStudentDto);
   }
+<<<<<<< HEAD
+=======
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.studentService.remove(+id);
+  }
+>>>>>>> 3758e2dd493b3456c76a35f83b076a9e4b600c17
 }

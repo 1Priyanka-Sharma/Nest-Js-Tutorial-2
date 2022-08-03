@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 import { Classroom } from 'src/classroom/entities/classroom.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+=======
+import { Type } from "class-transformer";
+import { Classroom } from 'src/classroom/entities/classroom.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+>>>>>>> 3758e2dd493b3456c76a35f83b076a9e4b600c17
 
 @Entity()
 export class Student {
@@ -12,6 +18,34 @@ export class Student {
   @Column()
   lastName: string;
 
+<<<<<<< HEAD
   @ManyToOne(() => Classroom)
   classroom: Classroom;
 }
+=======
+  // classroom: Promise<Classroom>;
+  // we use Promise<Classroom> only for strong typing
+  
+  // @ManyToOne(type => Classroom, {lazy: true})
+  // @ManyToOne(type => Classroom, {eager: true,cascade:false})
+  
+  
+  // No need to provide second argument because Student(Owner) can always access the Classroom with its properties.
+  // @ManyToOne(type => Classroom)
+  @ManyToOne(type => Classroom, {eager: true})
+  @JoinColumn({name: "classroom"})
+  @Type(type => Classroom)
+  classroom: Classroom;
+}
+
+
+// Eager relations are loaded automatically each time you load entities from the database (Using find() query)
+// Now when you load Student you don't need to join or specify relations you want to load. 
+// They will be loaded automatically.
+// return this.studentRepository.find();
+// Don't work on createQueryBuilder()-use leftJoinAndSelect to load the relation-
+
+// {eager: true}-relations are automatiely loaded( find()-in Student Db- classroom entity is visible)
+
+
+>>>>>>> 3758e2dd493b3456c76a35f83b076a9e4b600c17
