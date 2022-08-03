@@ -13,23 +13,28 @@ export class Student {
   @Column()
   lastName: string;
 
-  // @ManyToOne(type => Classroom, {lazy: true})
   // classroom: Promise<Classroom>;
   // we use Promise<Classroom> only for strong typing
   
-  // @ManyToOne(type => Classroom, {eager: true})
-  @ManyToOne(type => Classroom, {eager: true,cascade:false})
+  // @ManyToOne(type => Classroom, {lazy: true})
+  // @ManyToOne(type => Classroom, {eager: true,cascade:false})
+  
+  
+  // No need to provide second argument because Student(Owner) can always access the Classroom with its properties.
   // @ManyToOne(type => Classroom)
-  @JoinColumn({name: "classroom_id"})
+  @ManyToOne(type => Classroom, {eager: true})
+  @JoinColumn({name: "classroom"})
   @Type(type => Classroom)
   classroom: Classroom;
 }
+
+
 // Eager relations are loaded automatically each time you load entities from the database (Using find() query)
 // Now when you load Student you don't need to join or specify relations you want to load. 
 // They will be loaded automatically.
 // return this.studentRepository.find();
 // Don't work on createQueryBuilder()-use leftJoinAndSelect to load the relation-
 
-// {eager: true}-relations are automatiely loaded( in Student Db- classroom entity is visible)
+// {eager: true}-relations are automatiely loaded( find()-in Student Db- classroom entity is visible)
 
 

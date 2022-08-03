@@ -43,3 +43,4 @@ export class ClassroomController {
     return this.classroomService.remove(+id);
   }
 }
+

@@ -14,12 +14,18 @@ export class Classroom {
   @Column()
   maxstudents: number;
 
-  // Entity 2=student entity 1= Classroom
-  // @OneToMany(type => Student, student => student.classroom)
+  // Entity 2=student(Owner) entity 1= Classroom
   // @OneToMany(type => Student, student => student.classroom,{cascade:true})
-  @OneToMany(type => Student, student => student.classroom,{cascade:false})
+  // @OneToMany(type => Student, student => student.classroom,{cascade:false})
+
+
+  // First Argument is class of the entity with which we want to make our relationship.
+  // Second Argument is passed to make this relation bi-directional (i.e.classroom can access student table).
+  // @OneToMany(type => Student, student => student.classroom,{eager:true})
+  @OneToMany(type => Student, student => student.classroom)
   @Type(type => Student)
-  students: Student[];
+  students: Student[]; 
+
 }
 
 
@@ -31,6 +37,8 @@ export class Classroom {
 // question.categories = Promise.resolve([category1, category2])
 // await dataSource.manager.save(question)
 
+
+
 // Eager relations are loaded automatically each time you load entities from the database (Using find() query)
 // Relation will be loaded automatically by - return this.studentRepository.find();
 // Now when I load Student I don't need to join or specify relations I want to load. 
@@ -40,6 +48,8 @@ export class Classroom {
 // Have Promise as type - value is stored in a promise, and promise is returned 
 //  like-  categories: Promise<Category[]>
 // To save such entity. use Promise.resolve()
+
+
 
 //cascade- If set to true, the related object will be inserted and updated in the database.
 // cascade options ("insert" | "update" | "remove" | "soft-remove" | "recover")[].

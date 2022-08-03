@@ -10,7 +10,7 @@ export class StudentService {
   constructor(
     @InjectRepository(Student)
     private readonly studentRepository: Repository<Student>, // @InjectRepository(Classroom) // private readonly classroomRepository: Repository<Classroom>
-  ) {}
+  ) { }
 
   async create(createStudentDto: CreateStudentDto): Promise<Student> {
     const newStudent = await this.studentRepository.create(createStudentDto);
@@ -41,19 +41,49 @@ export class StudentService {
     return newStudent;
   }
 
-  findAll(): Promise<Student[]> {
-    return this.studentRepository.find();
+  // async findAll() {
+  async findAll(): Promise<Student[]> {
+    return await this.studentRepository.find();
+    //   {relations:{
+    //    classroom:true
+    //   }}
+    // );
+    // return await this.studentRepository    
+    // .createQueryBuilder("student")
+    // // .innerJoinAndSelect("student.classroom", "studc")
+    // .getMany()
+    // return await this.studentRepository.count();
+    // return await this.studentRepository.countBy('groupby');
+    // return await this.studentRepository.findAndCount()
   }
 
   async findTotalStudents() {
     return await this.studentRepository
       .createQueryBuilder('student')
-      .leftJoinAndSelect('student.classroom', 'maxstud')    //optional
-      .select('COUNT(student.id) AS Students')
-      .addSelect('MAX( maxstud.maxstudents) AS maxStudents')  //optional
+      .innerJoinAndSelect('student.classroom', 'stud_classroom')    //optional
+      // .leftJoinAndSelect('student.classroom', 'stud_classroom')    //optional
+      .select('COUNT(student.id)', 'total_students')
+      .addSelect('MAX( stud_classroom.maxstudents) AS maxStudents')  //optional
       .addSelect('student.classroom.id', 'Classroom_ID')
       .groupBy('student.classroom.id')
+      .where('stud_classroom.id=student.classroom.id')
       .getRawMany();
+
+    //     return await this.studentRepository.find({
+    //       select:{
+    // // "classroom_id":true
+    //       },
+    //       relations:{
+    //         "classroom":true
+    //       },
+    //       where:{
+
+    //       }
+
+    //     }
+    //     )
+
+
   }
 
   async update(
@@ -69,6 +99,7 @@ export class StudentService {
   }
 
   remove(id: number) {
+    // async remove(id: number) {
     return this.studentRepository.delete(id);
   }
 }

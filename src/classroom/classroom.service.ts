@@ -17,7 +17,7 @@ export class ClassroomService {
   constructor(
     @InjectRepository(Classroom)
     private readonly classroomRepository: Repository<Classroom>,
-  ) {}
+  ) { }
 
   async create(createClassroomDto: CreateClassroomDto): Promise<Classroom> {
     let classroomName = createClassroomDto.name;
@@ -38,8 +38,11 @@ export class ClassroomService {
     );
   }
 
-  findAll(): Promise<Classroom[]> {
-    return this.classroomRepository.find();
+  async findAll(): Promise<Classroom[]> {
+    return await this.classroomRepository.find();
+    // return await this.classroomRepository.find({relations:{
+    //   students:true
+    // }});
   }
 
   async findTotalStudents(): Promise<Classroom[]> {
@@ -76,7 +79,46 @@ export class ClassroomService {
     throw new HttpException('Classroom not found', HttpStatus.NOT_FOUND);
   }
 
-  remove(id: number) {
+  // remove(id: number) {
+  async remove(id: number) {
     return this.classroomRepository.delete(id);
+    // return await this.classroomRepository.findBy({ id });
+    
   }
 }
+
+// return await this.classroomRepository.findOneBy({ id });
+    // {
+    //   "id": 1,
+    //   "name": "1",
+    //   "maxstudents": 5
+    // }
+
+// return await this.studentRepository.findBy({ firstName:"Priya"});
+    // [
+    //   {
+    //     "id": 1,
+    //     "firstName": "Priya",
+    //     "lastName": "Sharma",
+    //     "classroom": {
+    //       "id": 1,
+    //       "name": "1",
+    //       "maxstudents": 5
+    //     }
+    //   },
+    //   {
+    //     "id": 5,
+    //     "firstName": "Priya",
+    //     "lastName": "Sharma",
+    //     "classroom": {
+    //       "id": 4,
+    //       "name": "3",
+    //       "maxstudents": 2
+    //     }
+    //   }
+    // ]
+
+
+
+// const deleteClassroom = await this.classroomRepository.findOneBy({ id });
+// return this.classroomRepository.remove(deleteClassroom);
