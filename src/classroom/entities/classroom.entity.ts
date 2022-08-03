@@ -12,6 +12,6 @@ export class Classroom {
   @Column()
   maxstudents: number;
 
-  @OneToMany(() => Student, (student) => student.classroom)
+  @OneToMany(() => Student, (student) => student.classroom,{eager:true})
   students: Student[];
 }
